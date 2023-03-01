@@ -1,6 +1,7 @@
 var express = require("express")
 var cors = require("cors")
 require('./src/config/connection')
+const { json } = require('express')
 
 var app = express();
 
@@ -8,6 +9,9 @@ var app = express();
 require('dotenv').config()
 
 var router = require('./src/routes/user.routes')
+
+app.use(cors())
+app.use(json())
 
 app.get("/",(req,res) => {
     res.send("Welcome to backend")

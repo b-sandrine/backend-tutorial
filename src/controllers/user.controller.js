@@ -1,9 +1,10 @@
 var User = require('../models/user.model');
 var Crypto = require('crypto-js')
+var jwt = require('jsonwebtoken');
 
-async function RegisterUser (req,res) {
+exports.RegisterUser = async (req,res) => {
     try {
-        var hashedPassword = Crypto.AES.encrypt(req.body.password)
+        var hashedPassword = Crypto.AES.encrypt(req.body.password,process.env.PASS_SEC_KEY)
         req.body.password = hashedPassword;
         const response = await User.create(req.body)
     
@@ -17,9 +18,9 @@ async function RegisterUser (req,res) {
     }
 }
 
-async function LoginUser (req,res) {
+exports.LoginUser = async (req,res) => {
     try {
-        var user = User.findOne({email: req.body.email})
+        var user = await User.findOne({email: req.body.email})
         if(!user) {
             return res.status(401).json({
                 success: false,
@@ -27,7 +28,7 @@ async function LoginUser (req,res) {
             })
         }
 
-        const hashedPassword = Crypto.AES.decrypt(user.password, process.env.SECRET-KEY)
+        const hashedPassword = Crypto.AES.decrypt(user.password, process.env.SECRET_KEY )
         const originalPassword = hashedPassword.toString(Crypto.enc.Utf8)
 
         if(originalPassword != req.body.password){
@@ -56,5 +57,25 @@ async function LoginUser (req,res) {
     }
 }
 
+exports.FindAllUser = async(req,res) => {
+    try {
+        const users = await User.find()
+        if(!users) {
+            return res.status(400).json({
+                success: false,
+                data: "Records Not FOund"
+            })
+        }
 
-module.exports = { RegisterUser, LoginUser } 
+        res.status(200).json({
+            success: true,
+            data: users
+        })
+    }
+    catch(err) {
+        res.status(500).json({
+            success: false,
+            message: err.message 
+        })
+    }
+}
