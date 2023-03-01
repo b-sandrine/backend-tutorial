@@ -1,14 +1,23 @@
 var express = require("express")
 var cors = require("cors")
-require('dotenv').config()
+require('./src/config/connection')
 
 var app = express();
 
-const PORT = process.env.PORT || 6000
+// requiring dotenv & loading env variables 
+require('dotenv').config()
+
+var router = require('./src/routes/user.routes')
 
 app.get("/",(req,res) => {
     res.send("Welcome to backend")
 })
+
+app.use('/api/users',router);
+
+
+const PORT = process.env.PORT || 6000
+
 
 app.listen(PORT, () => {
     console.log("http://localhost:"+PORT)
