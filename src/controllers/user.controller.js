@@ -79,3 +79,27 @@ exports.FindAllUser = async(req,res) => {
         })
     }
 }
+
+exports.DeleteUser = async(req,res) => {
+    try {
+        console.log(req.params.id)
+        var user = await User.findByIdAndDelete(req.params.id);
+            if(!user) {
+                return res.status(400).json({
+                success: false,
+                data: "Failed to delete user"
+            })
+        }
+
+        res.status(200).json({
+            success: true,
+            data: user
+        })
+    }
+    catch (err) {
+        res.status(500).json({
+            success: false,
+            data: err.message
+        })
+    }
+}
