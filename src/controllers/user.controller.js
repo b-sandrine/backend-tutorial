@@ -80,6 +80,38 @@ exports.FindAllUser = async(req,res) => {
     }
 }
 
+exports.UpdateUser = async(req,res) => {
+    try {
+        const id = req.params.id;
+        console.log(id)
+        const user = await User.findById(id)
+        if(!user) {
+            return res.status(400).json({
+                success: false,
+                message: "User not found"
+            })
+        }
+
+        console.log("User found")
+ 
+        var hashedPassword = Crypto.AES.encrypt(req.body.password,process.env.PASS_SEC_KEY)
+        req.body.password = hashedPassword;
+
+        var updatedUser =  User.findByIdAndUpdate(id, req.body)
+
+        res.status(200).json ({
+            success: true,
+            data: updatedUser
+        })
+    }
+    catch(err) {
+        res.status(500).json({
+            success: false,
+            data: err.message
+        })
+    }
+}
+
 exports.DeleteUser = async(req,res) => {
     try {
         console.log(req.params.id)

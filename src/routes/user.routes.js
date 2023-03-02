@@ -1,4 +1,4 @@
-var { RegisterUser , LoginUser, FindAllUser , DeleteUser} = require('../controllers/user.controller')
+var { RegisterUser , LoginUser, FindAllUser , UpdateUser, DeleteUser} = require('../controllers/user.controller')
 
 var express = require('express')
 
@@ -19,5 +19,9 @@ router
 router
 .route('/delete/:id')
 .delete(DeleteUser)
+
+router
+.route('/update/:id')
+.put(UpdateUser)
 
 module.exports = router;
