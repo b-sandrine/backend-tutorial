@@ -17,11 +17,8 @@ router
 .get(FindAllUser)
  
 router
-.route('/delete/:id')
+.route('/:id')
 .delete(DeleteUser)
-
-router
-.route('/update/:id')
 .put(UpdateUser)
 
 module.exports = router;
