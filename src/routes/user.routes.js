@@ -1,5 +1,5 @@
 var { RegisterUser , LoginUser, FindAllUser , UpdateUser, DeleteUser} = require('../controllers/user.controller')
-var { authMiddleware } = require('../middlewares/userAuthMiddleware')
+var { requireAuth } = require('../middlewares/userAuthMiddleware')
 
 var express = require('express')
 
@@ -9,10 +9,10 @@ router.post('/register', RegisterUser)
 
 router.post('/login',LoginUser)
 
-router.get('/allusers', authMiddleware, FindAllUser)
+router.get('/allusers', requireAuth, FindAllUser)
  
-router.delete('/delete/:id', authMiddleware , DeleteUser)
+router.delete('/delete/:id', requireAuth , DeleteUser)
 
-router.put('/update/:id', authMiddleware , UpdateUser)
+router.put('/update/:id', requireAuth , UpdateUser)
 
 module.exports = router;
