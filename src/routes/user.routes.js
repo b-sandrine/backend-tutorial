@@ -4,21 +4,14 @@ var express = require('express')
 
 var router = express.Router();
 
-router
-.route('/register')
-.post(RegisterUser)
+router.post('/register', RegisterUser)
 
-router
-.route('/login')
-.post(LoginUser)
+router.post('/login',LoginUser)
 
-router
-.route('/allusers')
-.get(FindAllUser)
+router.get('/allusers',FindAllUser)
  
-router
-.route('/:id')
-.delete(DeleteUser)
-.put(UpdateUser)
+router.delete('/delete/:id',DeleteUser)
+
+router.put('/update/:id', UpdateUser)
 
 module.exports = router;
