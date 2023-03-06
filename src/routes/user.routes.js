@@ -1,24 +1,18 @@
 var { RegisterUser , LoginUser, FindAllUser , UpdateUser, DeleteUser} = require('../controllers/user.controller')
+var { requireAuth } = require('../middlewares/userAuthMiddleware')
 
 var express = require('express')
 
 var router = express.Router();
 
-router
-.route('/register')
-.post(RegisterUser)
+router.post('/register', RegisterUser)
 
-router
-.route('/login')
-.post(LoginUser)
+router.post('/login',LoginUser)
 
-router
-.route('/allusers')
-.get(FindAllUser)
+router.get('/allusers', requireAuth, FindAllUser)
  
-router
-.route('/:id')
-.delete(DeleteUser)
-.put(UpdateUser)
+router.delete('/delete/:id', requireAuth , DeleteUser)
+
+router.put('/update/:id', requireAuth , UpdateUser)
 
 module.exports = router;
