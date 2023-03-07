@@ -3,6 +3,7 @@ var Crypto = require('crypto-js')
 var jwt = require('jsonwebtoken');
 
 exports.RegisterUser = async (req,res) => {
+    console.log(req.body)
     try {
         var hashedPassword = Crypto.AES.encrypt(req.body.password,process.env.PASS_SEC_KEY)
         req.body.password = hashedPassword;
@@ -19,6 +20,7 @@ exports.RegisterUser = async (req,res) => {
 }
 
 exports.LoginUser = async (req,res) => {
+    console.log(req.body)
     try {
         var user = await User.findOne({email: req.body.email})
         if(!user) {
